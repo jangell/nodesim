@@ -11,6 +11,7 @@
 #define GRIDSIZEY 27
 
 #define ANSI_COLOR_RED "\x1b[31m"
+#define ANSI_COLOR_BLUE    "\x1b[36m"
 #define ANSI_COLOR_RESET   "\x1b[0m"
 
 int printgrid();
@@ -20,8 +21,7 @@ int main(int argc, char * argv[])
 {
   int * grid = malloc(sizeof(int) * GRIDSIZEX * GRIDSIZEY);
   gridinit(grid, GRIDSIZEX, GRIDSIZEY);
-  *(grid + (GRIDSIZEX * 5) + 4) = 1;
-  randomfinder(grid, GRIDSIZEX, GRIDSIZEY, 4, 5, 8, 9);
+  randomfinder(grid, GRIDSIZEX, GRIDSIZEY, 4, 5, 28, 13);
   //printgrid(grid, GRIDSIZEX, GRIDSIZEY);
   return 0;
 }
@@ -43,11 +43,19 @@ int printgrid(int * grid, int sizex, int sizey)
   int i, j;
   for(j = 0; j < sizey; j++){
     for(i = 0; i < sizex; i++){
-      if(*(grid + (j * GRIDSIZEX) + i) == 0){
+      int val = *(grid + (j * GRIDSIZEX) + i);
+      if(val == 0){
 	printf("o");
       }
-      else{
+      else if(val == 1){
 	printf(ANSI_COLOR_RED "x" ANSI_COLOR_RESET);
+      }
+      else if(val == 2){
+	printf(ANSI_COLOR_BLUE "@" ANSI_COLOR_RESET);
+      }
+      else{
+	printf("%i\n", val);
+	return 1;
       }
       if(i < (sizex - 1)){
 	printf("-");
