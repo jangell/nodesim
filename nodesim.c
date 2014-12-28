@@ -21,7 +21,8 @@ int main(int argc, char * argv[])
   int * grid = malloc(sizeof(int) * GRIDSIZEX * GRIDSIZEY);
   gridinit(grid, GRIDSIZEX, GRIDSIZEY);
   *(grid + (GRIDSIZEX * 5) + 4) = 1;
-  printgrid(grid, GRIDSIZEX, GRIDSIZEY);
+  randomfinder(grid, GRIDSIZEX, GRIDSIZEY, 4, 5, 8, 9);
+  //printgrid(grid, GRIDSIZEX, GRIDSIZEY);
   return 0;
 }
 
