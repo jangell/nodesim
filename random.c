@@ -22,6 +22,7 @@ int randomfinder(int * grid, int * arcgrid, int sizex, int sizey, int startx, in
   onx = startx;
   ony = starty;
   *GRIDSPOT(endx, endy) = 2;
+  *GRIDSPOT(startx, starty) = 1;
   srandom(time(NULL));
   int lastx = onx;
   int lasty = ony;
@@ -35,25 +36,25 @@ int randomfinder(int * grid, int * arcgrid, int sizex, int sizey, int startx, in
   		// have already happened, so be careful with them
     int currand = random()%8;
     if(currand == 0 && onx < sizex - 1){
-      if(*GRIDSPOT(onx+1, ony) == 0){
+      if(*GRIDSPOT(onx+1, ony) != 1){
       	onx++;
       	*ARCSPOT(onx-1, ony*2) = 1;
       }
     }
     else if(currand == 1 && onx > 0){
-			if(*GRIDSPOT(onx-1, ony) == 0){
+			if(*GRIDSPOT(onx-1, ony) != 1){
 				onx--;
 				*ARCSPOT(onx, ony*2) = 1;
 			}
     }
     else if(currand == 2 && ony < sizey - 1){
-    	if(*GRIDSPOT(onx, ony+1) == 0){
+    	if(*GRIDSPOT(onx, ony+1) != 1){
     		*ARCSPOT(onx*2, ony*2+1) = 4;
       	ony++;
       }
     }
     else if(currand == 3 && ony > 0){
-    	if(*GRIDSPOT(onx, ony-1) == 0){
+    	if(*GRIDSPOT(onx, ony-1) != 1){
     		*ARCSPOT(onx*2, ony*2-1) = 4;
       	ony--;
       }
@@ -61,7 +62,7 @@ int randomfinder(int * grid, int * arcgrid, int sizex, int sizey, int startx, in
   	// 2 3
     else if(currand == 4 && onx > 0 && ony > 0){
     	int sym = *ARCSPOT(onx*2-1, ony*2-1);
-    	if((sym == 0 || sym == 1) && *GRIDSPOT(onx - 1, ony - 1) == 0){
+    	if((sym == 0 || sym == 1) && *GRIDSPOT(onx - 1, ony - 1) != 1){
     		if(sym == 0){
       		*ARCSPOT(onx*2-1, ony*2-1) = 2;
       	}
@@ -74,7 +75,7 @@ int randomfinder(int * grid, int * arcgrid, int sizex, int sizey, int startx, in
     }
     else if(currand == 5 && onx < sizex - 1 && ony > 0){
     	int sym = *ARCSPOT(onx*2+1, ony*2-1);
-    	if((sym == 0 || sym == 2) && *GRIDSPOT(onx + 1, ony - 1) == 0){
+    	if((sym == 0 || sym == 2) && *GRIDSPOT(onx + 1, ony - 1) != 1){
       	if(sym == 0){
       		*ARCSPOT(onx*2+1, ony*2-1) = 1;
       	}
@@ -87,7 +88,7 @@ int randomfinder(int * grid, int * arcgrid, int sizex, int sizey, int startx, in
     }
     else if(currand == 6 && onx > 0 && ony < sizey - 1){
     	int sym = *ARCSPOT(onx*2-1, ony*2+1);
-    	if((sym == 0 || sym == 2) && *GRIDSPOT(onx - 1, ony + 1) == 0){
+    	if((sym == 0 || sym == 2) && *GRIDSPOT(onx - 1, ony + 1) != 1){
       	if(sym == 0){
       		*ARCSPOT(onx*2-1, ony*2+1) = 1;
       	}
@@ -100,7 +101,7 @@ int randomfinder(int * grid, int * arcgrid, int sizex, int sizey, int startx, in
     }
     else if(currand == 7 && onx < sizex - 1 && ony < sizey - 1){
     	int sym = *ARCSPOT(onx*2+1, ony*2+1);
-    	if((sym == 0 || sym == 1) && *GRIDSPOT(onx + 1, ony + 1) == 0){
+    	if((sym == 0 || sym == 1) && *GRIDSPOT(onx + 1, ony + 1) != 1){
       	if(sym == 0){
       		*ARCSPOT(onx*2+1, ony*2+1) = 2;
       	}
@@ -114,7 +115,7 @@ int randomfinder(int * grid, int * arcgrid, int sizex, int sizey, int startx, in
     time++;
     if(onx == lastx && ony == lasty){
       killcount++;
-      if(killcount > 10){
+      if(killcount > 20){
 	printf("Starting point: [%i, %i]\n", startx, starty);
 	printf("Ending point:   [%i, %i]\n\n", endx, endy);
 	printf("Random:\n");
@@ -130,12 +131,17 @@ int randomfinder(int * grid, int * arcgrid, int sizex, int sizey, int startx, in
       lasty = ony;
       moves++;
     }
-    *GRIDSPOT(onx, ony) = 1;
+    if(*GRIDSPOT(onx, ony) == 2){
+    	*GRIDSPOT(onx, ony) = 3;
+    }
+    else{
+    	*GRIDSPOT(onx, ony) = 1;
+    }
     printgrid(grid, arcgrid, sizex, sizey);
     // sleep to make progression visible, using nanosleep
     struct timespec * sleeptime = malloc(sizeof(struct timespec));
-    sleeptime->tv_sec = 1;
-    sleeptime->tv_nsec = 0000000;
+    sleeptime->tv_sec = 0;
+    sleeptime->tv_nsec = 50000000;
     nanosleep(sleeptime, sleeptime);
   }
   // print stats

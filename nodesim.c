@@ -33,7 +33,7 @@ int main(int argc, char * argv[])
   int * arcgrid = malloc(sizeof(int) * ARCSIZEX * ARCSIZEY);
   gridinit(grid, GRIDSIZEX, GRIDSIZEY);
   gridinit(arcgrid, ARCSIZEX, ARCSIZEY);
-  randomfinder(grid, arcgrid, GRIDSIZEX, GRIDSIZEY, 10, 10, 20, 20);
+  randomfinder(grid, arcgrid, GRIDSIZEX, GRIDSIZEY, 15, 10, 60, 20);
   //printgrid(grid, arcgrid, GRIDSIZEX, GRIDSIZEY);
   return 0;
 }
@@ -67,7 +67,7 @@ int printgrid(int * grid, int * arcgrid, int sizex, int sizey)
 	printf(ANSI_COLOR_RED "@" ANSI_COLOR_RESET);
       }
       else if(val == 3){
-      	printf(ANSI_COLOR_GREEN "+" ANSI_COLOR_RESET);
+      	printf(ANSI_COLOR_GREEN "@" ANSI_COLOR_RESET);
       }
       else{
 	printf("%i\n", val);

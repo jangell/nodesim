@@ -1,0 +1,7 @@
+Jason Angell
+NodeSim (Node Simulator)
+
+Simulates a path from one node to another (currently only supports random path)
+Choose the start and end points where the random path method is called in the main function
+Currently only ASCII text output; should update to graphics in a later version
+
